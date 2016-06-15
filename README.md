@@ -1,3 +1,1 @@
-# DVP-WEBPHONESAMPLE
-web phone sample
-
+# DVP-WINPHONE
