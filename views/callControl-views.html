@@ -1,0 +1,358 @@
+<div class="reg-warp-main bg-image " ng-controller="callContentCtrl" id="callSection">
+    <!--<div class="reg-bg-color-wrap"></div>-->
+    <!--http://www.alessioatzeni.com/blog/css3-preloader-animation-for-only-user-agent-supports-it/-->
+
+
+    <div class="container">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="reg-lef-wrap  fadeIn">
+                        <div class="veery-logo101">
+                            <img src="assets/images/logo1.png">
+                        </div>
+                        <h1 class="h1 fnt-color-blue1 font-Dosis  fnt-weight-500">Veery Web Phone</h1>
+
+                        <p class="font-family-Roboto fnt-color-3 fnt-weight-200 ">
+                            Veery is an API driven communication platform for developers.
+                            Developers can add voice, sms, messaging, video communication facility to their application
+                            through Veery.
+                            This is a sample soft phone developed using Veery WEBRTC SDK and NOTIFICATION SDK to
+                            demonstrate how to add voice features to your own website.
+                        </p>
+
+
+
+                    </div>
+
+                    <div class="mode-wrap-video">
+                        <div id="divVideo" class='div-video'>
+                            <div id="divVideoRemote" class="video-remote">
+                                <video class="video" width="100%" height="100%" id="video_remote"
+                                       autoplay="autoplay"
+                                       style="opacity: 0;
+                                        background-color: #000000;
+                                        -webkit-transition-property: opacity;
+                                         -webkit-transition-duration: 2s;"></video>
+                            </div>
+
+                            <div id="divVideoLocalWrapper"
+                                 style="margin-left: 0px; border:0px solid #009; z-index: 1000">
+                                <iframe class="previewvideo" style="border:0px solid #009; z-index: 1000"></iframe>
+                                <div id="divVideoLocal" class="previewvideo"
+                                     style=' border:0px solid #009; z-index: 1000'>
+                                    <video class="video" width="100%" height="100%" id="video_local"
+                                           autoplay="autoplay"
+                                           muted="true" style="opacity: 0;
+                                            background-color: #000000; -webkit-transition-property: opacity;
+                                            -webkit-transition-duration: 2s;"></video>
+                                </div>
+                            </div>
+                            <div id="divScreencastLocalWrapper"
+                                 style="margin-left: 90px; border:0px solid #009; z-index: 1000">
+                                <iframe class="previewvideo" style="border:0px solid #009; z-index: 1000"></iframe>
+                                <div id="divScreencastLocal" class="previewvideo"
+                                     style=' border:0px solid #009; z-index: 1000'>
+                                </div>
+                            </div>
+                            <!--div id="div1" style="margin-left: 300px; border:0px solid #009; z-index: 1000">
+                                <iframe class="previewvideo" style="border:0px solid #009; z-index: 1000"> </iframe>
+                                <div id="div2" class="previewvideo" style='border:0px solid #009; z-index: 1000'>
+                                  <input type="button" class="btn" style="" id="Button1" value="Button1" /> &nbsp;
+                                  <input type="button" class="btn" style="" id="Button2" value="Button2" /> &nbsp;
+                                </div>
+                            </div-->
+                        </div>
+                    </div>
+
+                    <div>
+                        <!-- Audios -->
+                        <audio id="audio_remote" autoplay="autoplay"></audio>
+                        <audio id="ringtone" loop src="sounds/ringtone.wav"></audio>
+                        <audio id="ringbacktone" loop src="sounds/ringbacktone.wav"></audio>
+                        <audio id="dtmfTone" src="sounds/dtmf.wav"></audio>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="call-control-wrap call-wrap p-20  fadeInRight">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <!-- <label id="lblStatus"></label></br>
+                                   <label id="lblSipStatus"></label></br>
+                                   <label id="lblNotification"></label>-->
+
+                                <!-- #number display -->
+                                <div ng-show="!UIelementOption.showIncomingCall" class="number-display">
+                                    <div class="col-sm-12  margin-20-bottom">
+                                        <input required type="text" class="form-control" id="number"
+                                               ng-model="call.number"
+                                               placeholder="Enter the phone no to call">
+                                    </div>
+                                </div>
+                                <!-- end -->
+
+                                <!-- #keypad  #call history -->
+                                <div class="phone-middel-wrap">
+                                    <div class="loading-history" ng-if="UIelementOption.showLoadingHistory;">
+                                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                                    </div>
+
+                                    <!-- #callhistory -->
+                                    <div class="call-history  fadeInLeft"
+                                         ng-show="UIelementOption.showCallHistory">
+                                        <div class="details" ng-repeat="caller in callHistoryes  | orderBy:'-id'">
+                                            <div class="type" ng-click="eventHandler.makeAudioCall(caller)">
+                                                <i ng-class="caller.state== 0 ? 'icon-call-ended miss' :
+                                                    caller.state== 1 ? 'icon-phone-call-1 outgoing':
+                                                   caller.state== 2 ?'icon-phone-call-2 incoming':'incoming'"></i>
+                                            </div>
+                                            <div class="log" ng-click="eventHandler.makeAudioCall(caller)">
+                                                <span class="font-Dosis">{{caller.number}}</span>
+
+                                                <div class="log-date font-family-Roboto">{{caller.date}},
+                                                    {{caller.time}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--#KeyPad-->
+                                    <div id='divKeyPad'
+                                         ng-show="UIelementOption.showKeyPad"
+                                         class="span2 well div-keypad ">
+
+                                        <table style="width: 100%; height: 100%">
+                                            <tr>
+                                                <td><a class="dialpadbtn m-r-35"
+                                                       value="1"
+                                                       ng-click="eventHandler.sipSendDTMF('1');">1</a>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="2"
+                                                       ng-click="eventHandler.sipSendDTMF('2');">2</a>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="3"
+                                                       ng-click="eventHandler.sipSendDTMF('3');">3</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="4"
+                                                       ng-click="eventHandler.sipSendDTMF('4');">4</a>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="5"
+                                                       ng-click="eventHandler.sipSendDTMF('5');">5</a>
+                                                    <a class="dialpadbtn m-r-35" value="6"
+                                                       ng-click="eventHandler.sipSendDTMF('6');">6</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a class="dialpadbtn m-r-35"
+                                                       value="7"
+                                                       ng-click="eventHandler.sipSendDTMF('7');">7</a>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="8"
+                                                       ng-click="eventHandler.sipSendDTMF('8');">8</a>
+                                                    <a class="dialpadbtn m-r-35" href="javascript:void (0);"
+                                                       value="9"
+                                                       ng-click="eventHandler.sipSendDTMF('9');">9</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a type="button" class="dialpadbtn m-r-35"
+                                                       value="*"
+                                                       ng-click="eventHandler.sipSendDTMF('*');">*</a>
+                                                    <a type="button" class="dialpadbtn m-r-35"
+                                                       value="0"
+                                                       ng-click="eventHandler.sipSendDTMF('0');">0</a>
+                                                    <a type="button" class="dialpadbtn m-r-35"
+                                                       value="#"
+                                                       ng-click="eventHandler.sipSendDTMF('#');">#</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <!--<td colspan=3><input type="button" style="width: 100%"-->
+                                                <!--class="btn btn-medium btn-danger" value="close"-->
+                                                <!--ng-click="closeKeyPad()"/></td>-->
+                                            </tr>
+                                        </table>
+                                    </div>
+
+
+                                    <!--#outgoingCall -->
+                                    <div class="outgoing-call"
+                                         ng-show="UIelementOption.showOutGoingCall">
+
+                                        <div class="outgoing-wrap">
+                                            <div class="connecting"
+                                                 ng-class="connecting-call">
+                                                <a class="call-image"
+                                                   ng-class="ringing">
+                                                    <img src="assets/images/avatar_default.png">
+                                                </a>
+                                            </div>
+
+                                            <p class="font-family-Roboto out-call-num">{{call.number}}</p>
+
+                                             <span class="font-Dosis out-call-name "
+                                                     >{{call.status}}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!--#CallConnect -->
+                                    <div class="outgoing-call"
+                                         ng-show="UIelementOption.showCallConnect">
+
+                                        <div class="outgoing-wrap">
+                                            <div class="connecting zoomIn "
+                                                 ng-class="UIelementOption.isCallConnect==true?'connected-call':'connecting-call'">
+                                                <a class="call-image"
+                                                   ng-class="UIelementOption.isCallConnect==true?'stop-ringing':'ringing'">
+                                                    <img src="assets/images/avatar_default.png">
+                                                </a>
+                                            </div>
+                                            <div class="font-family-Roboto call-time"
+                                                    >
+                                                <timer interval="1000" auto-start="false">
+                                                    {{mminutes}} : {{sseconds}}
+                                                </timer>
+                                            </div>
+
+                                            <p class="font-family-Roboto out-call-num">{{call.number}}</p>
+
+                                             <span class="font-Dosis out-call-name "
+                                                     >{{call.status}}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- #incoming  call -->
+                                    <div class="incoming-call-wrap  zoomIn"
+                                         ng-show="UIelementOption.showIncomingCall">
+
+                                        <div class="outgoing-wrap">
+                                            <div class="connecting">
+                                                <a class="call-image">
+                                                    <img src="assets/images/avatar_default.png">
+                                                </a>
+                                            </div>
+                                            <div class="font-family-Roboto call-time">
+                                                <timer interval="1000" auto-start="false">
+                                                    {{mminutes}} : {{sseconds}}
+                                                </timer>
+                                            </div>
+                                            <p class="font-family-Roboto out-call-num">{{call.number}}</p>
+                                            <span class="font-Dosis out-call-name">incoming call.</span>
+
+                                            <div class="incoming-btn-wrap">
+                                                <span class="anz icon-call-answer"
+                                                      ng-click="eventHandler.answerCall();"> </span>
+                                                <span class="cut icon-end-call-button"
+                                                      ng-click="eventHandler.rejectCall();"> </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- end -->
+                                </div>
+                                <!-- end -->
+
+
+                                <!--video call -->
+                                <!-- call option -->
+                                <div ng-show="UIelementOption.callFunctions" id="callFunctions" class="mode-wrap">
+                                    <ul class="mode">
+                                        <li class="font-family-Roboto call-btn-rounder video-wrap "
+                                            ng-show="UIelementOption.isVideoCallBtn"
+
+                                            ng-click="eventHandler.makeVideoCall(call);">
+                                            <span class="icon-tiny-video-symbol"></span>
+                                        </li>
+                                        <li class="font-family-Roboto call-btn-rounder call-anz "
+                                            id="btnAudioCall"
+                                            ng-show="UIelementOption.isCallBtn"
+
+                                            ng-click="eventHandler.makeAudioCall(call)">
+                                            <span class=" icon-call-answer"></span>
+                                        </li>
+                                        <li class="font-family-Roboto call-btn-rounder end-call"
+                                            id="btnHangUp"
+                                            ng-show="UIelementOption.isEndCallBtn"
+                                            ng-click="eventHandler.endCall()">
+                                            <span class="icon-end-call-button"></span>
+                                        </li>
+                                        <li class="font-family-Roboto call-btn-rounder microphone"
+                                            ng-show="UIelementOption.isEndCallBtn"
+                                            ng-click="eventHandler.callMute()">
+                                            <span class="fa fa-microphone"></span>
+                                            <!--<span class="fa fa-microphone-slash"></span>-->
+                                        </li>
+                                        <li class="font-family-Roboto call-btn-rounder keypad"
+                                            ng-class="UIelementOption.showCallHistory? 'keypad-selected':
+                                             'keypad-select'"
+                                            ng-click="eventHandler.keyPadClick()">
+                                            <span class="icon-telephone-keypad-with-ten-keys"></span>
+                                            <!--<span class="fa fa-microphone-slash"></span>-->
+                                        </li>
+                                        <!--`-->
+                                    </ul>
+                                </div>
+                                <!-- end -->
+                            </div>
+
+                            <div class="form-group" id="phoneButtons">
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="row">
+                        <!-- Split button -->
+                       <!-- <div class="btn-group">
+
+                            <button ng-show="!registerdWithArds" type="button"
+                                    class="btn btn-default btn-sm btn-warning" ng-click="RegisterWithArds()">
+                                Register
+                            </button>
+                        </div>-->
+                        <div class="btn-group" ng-show="registerdWithArds">
+
+                            <button ng-show="registerdWithArds" type="button"
+                                    class="btn btn-default btn-sm btn-warning" ng-click="unregisterWithArds()">
+                                Unregister
+                            </button>
+
+                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
+                                   ng-click="BreakRequest('Lunch')"
+                                   uib-btn-radio="'Lunch'">
+                                Lunch
+                            </label>
+                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
+                                   ng-click="BreakRequest('Official')"
+                                   uib-btn-radio="'Official '">Official</label>
+                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
+                                   ng-click="BreakRequest('Tea')"
+                                   uib-btn-radio="'MiddleTea'">Tea</label>
+                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
+                                   ng-click="BreakRequest('Training')"
+                                   uib-btn-radio="'Training'">Training</label>
+                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
+                                   ng-click="BreakRequest('Wrap')"
+                                   uib-btn-radio="'Wrap'">Wrap</label>
+                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
+                                   ng-click="BreakRequest('Meeting')"
+                                   uib-btn-radio="'Meeting'">Meeting</label>
+                            <label class="btn btn-success btn-sm" ng-model="radioModel"
+                                   ng-click="EndBreakRequest()"
+                                   uib-btn-radio="'available'">Available</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

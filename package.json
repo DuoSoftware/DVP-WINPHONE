@@ -1,0 +1,19 @@
+{
+  "name": "duowebphone",
+  "version": "1.0.0",
+  "description": "web phone sample",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rajinda",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DuoSoftware/DVP-WEBPHONESAMPLE.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DuoSoftware/DVP-WEBPHONESAMPLE/issues"
+  },
+  "homepage": "https://github.com/DuoSoftware/DVP-WEBPHONESAMPLE#readme"
+}

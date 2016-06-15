@@ -1,0 +1,30 @@
+
+.main-bg-color {
+    /*background: #3e4651;*/
+}
+
+body {
+    background-color: #3e4651;
+    animation: bg-color 10s infinite;
+    -webkit-animation: bg-color 50s infinite;
+}
+
+
+
+/*@-webkit-keyframes bg-color {*/
+    /*0% { background-color: #3e4651; }*/
+    /*20% { background-color: #344656; }*/
+    /*40% { background-color: #1abc9c; }*/
+    /*60% { background-color: #3498db; }*/
+    /*80% { background-color: #9b59b6; }*/
+    /*100% { background-color: #e74c3c; }*/
+/*}*/
+
+/*@keyframes bg-color {*/
+    /*0% { background-color: #3e4651; }*/
+    /*20% { background-color: #344656; }*/
+    /*40% { background-color: #1abc9c; }*/
+    /*60% { background-color: #3498db; }*/
+    /*80% { background-color: #9b59b6; }*/
+    /*100% { background-color: #e74c3c; }*/
+/*}*/
