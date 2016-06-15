@@ -9,10 +9,7 @@ routerApp.controller('callContentCtrl', function ($rootScope, $log, $scope, $sta
     $scope.currentState = "";
     $scope.registerdWithArds = false;
     $scope.BreakRequest = function (reason) {
-
-        var tokenPayload = jwtHelper.decodeToken(dataParser.userProfile.server.token);
-        console.log(tokenPayload);
-        resourceService.BreakRequest(tokenPayload.client, reason).then(function (response) {
+        resourceService.BreakRequest(dataParser.userProfile.id, reason).then(function (response) {
             $scope.currentState = reason;
         }, function (error) {
             $log.debug("BreakRequest err");
@@ -21,10 +18,7 @@ routerApp.controller('callContentCtrl', function ($rootScope, $log, $scope, $sta
     };
 
     $scope.EndBreakRequest = function () {
-
-        var tokenPayload = jwtHelper.decodeToken(dataParser.userProfile.server.token);
-
-        resourceService.EndBreakRequest(tokenPayload.client, $scope.currentState).then(function (response) {
+        resourceService.EndBreakRequest(dataParser.userProfile.id, $scope.currentState).then(function (response) {
             $scope.currentState = "Available";
         }, function (error) {
             $log.debug("EndBreakRequest err");
@@ -34,7 +28,6 @@ routerApp.controller('callContentCtrl', function ($rootScope, $log, $scope, $sta
 
     $scope.RegisterWithArds = function () {
 
-        var tokenPayload = jwtHelper.decodeToken(dataParser.userProfile.server.token);
 
         resourceService.RegisterWithArds(dataParser.userProfile.id, $scope.currentState).then(function (response) {
 
