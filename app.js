@@ -9,6 +9,7 @@ var routerApp = angular.module('veerySoftPhone',
         'ui-notification', 'resourceServiceModule','angular-jwt','base64']);
 
 routerApp.constant('baseUrl', 'http://ardsliteservice.104.131.67.21.xip.io/DVP/API/1.0.0.0/ARDS/resource');
+routerApp.constant('userServiceBaseUrl', 'http://localhost:3636/DVP/API/1.0.0.0/');
 
 routerApp.config(["$httpProvider", "$stateProvider", "$urlRouterProvider",
     function ($httpProvider, $stateProvider, $urlRouterProvider) {

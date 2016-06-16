@@ -27,10 +27,7 @@ routerApp.controller('callContentCtrl', function ($rootScope, $log, $scope, $sta
     };
 
     $scope.RegisterWithArds = function () {
-
-
-        resourceService.RegisterWithArds(dataParser.userProfile.id, $scope.currentState).then(function (response) {
-
+        resourceService.RegisterWithArds(dataParser.userProfile.id,dataParser.userProfile.veeryFormat ).then(function (response) {
             $scope.registerdWithArds = response;
         }, function (error) {
             $log.debug("RegisterWithArds err");
@@ -39,7 +36,6 @@ routerApp.controller('callContentCtrl', function ($rootScope, $log, $scope, $sta
     };
 
     $scope.unregisterWithArds = function () {
-
         resourceService.UnregisterWithArds(dataParser.userProfile.id).then(function (response) {
             $scope.registerdWithArds = !response;
         }, function (error) {
@@ -200,9 +196,8 @@ routerApp.controller('callContentCtrl', function ($rootScope, $log, $scope, $sta
 
             if (description == 'Connected') {
                 UIStateChange.inIdleState();
-                $scope.RegisterWithArds();
                 Notification.success({message: description, delay: 3000, closeOnClick: true});
-
+                $scope.RegisterWithArds();
             }
             else if (description == 'Forbidden') {
                 console.error(description);

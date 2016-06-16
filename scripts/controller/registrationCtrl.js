@@ -3,7 +3,7 @@
  */
 
 'use strict'
-routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $base64, $http, jwtHelper, dataParser) {
+routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $base64, $http, jwtHelper, dataParser,Notification, resourceService) {
 
 
     $scope.profile = {};
@@ -15,7 +15,7 @@ routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $
     $scope.profile.server.websocketUrl = "";//wss://159.203.160.47:7443
     $scope.profile.server.outboundProxy = "";
     $scope.profile.server.enableRtcwebBreaker = false;
-    $scope.profile.server.password=null;
+    $scope.profile.server.password = null;
     $scope.profile.server.token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3YXJ1bmFAZHVvc29mdHdhcmUuY29tIiwianRpIjoiMTk2N2E5MjItNmIyOS00NDgxLWI2MWUtOTMwZjVmMDA3ZDM3Iiwic3ViIjoiZTBlNTNhOWUtZjNkZi00MTZjLWFmZWItYzI2ZDVhZWIwYWY2IiwiZXhwIjoxNDY1MzEyMTQ2LCJ0ZW5hbnQiOiIxIiwiY29tcGFueSI6IjMiLCJjbGllbnQiOiIxIiwic2NvcGUiOlt7InJlc291cmNlIjoiYXJkc3Jlc291cmNlIiwiYWN0aW9ucyI6WyJyZWFkIiwid3JpdGUiLCJkZWxldGUiXX0seyJyZXNvdXJjZSI6InJlYWQifSx7InJlc291cmNlIjoid3JpdGUifSx7InJlc291cmNlIjoiZGVsZXRlIn0seyJyZXNvdXJjZSI6InJlc291cmNlIiwiYWN0aW9ucyI6WyJhcmRzcmVzb3VyY2UiLCJyZWFkIiwid3JpdGUiLCJkZWxldGUiLCJyZXNvdXJjZSJdfV0sImlhdCI6MTQ2NDcwNzM0Nn0.brIo8b6per6a1Djm4armChkS4L2O6T40HSrlj-scwcg";
 
     $scope.Register = function () {
@@ -33,7 +33,7 @@ routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $
             "grant_type": "password",
             "username": $scope.profile.userName,
             "password": $scope.profile.password,
-            "scope": "write_ardsresource write_notification profile_veeryaccount resourceid"
+            "scope": "write_ardsresource write_notification read_userProfile profile_veeryaccount resourceid"
         };
 
 
@@ -43,7 +43,7 @@ routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $
                 console.log(data);
 
                 if (data) {
-                    var decodeData = jwtHelper.decodeToken(data.access_token)
+                    var decodeData = jwtHelper.decodeToken(data.access_token);
 
                     var values = decodeData.context.veeryaccount.contact.split("@");
                     $scope.profile.id = decodeData.context.resourceid;
@@ -52,16 +52,26 @@ routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $
                     $scope.profile.publicIdentity = "sip:" + decodeData.context.veeryaccount.contact;//sip:bob@159.203.160.47
                     $scope.profile.server.token = data.access_token;
                     $scope.profile.server.domain = values[1];
-                    $scope.profile.server.websocketUrl = "ws://" + values[1] + ":5066";//wss://159.203.160.47:7443
+                    $scope.profile.server.websocketUrl = "wss://" + values[1] + ":7443";//wss://159.203.160.47:7443
                     $scope.profile.server.outboundProxy = "";
                     $scope.profile.server.enableRtcwebBreaker = false;
-
-                    $rootScope.login = 0;
-                    if($scope.profile.server.password)
-                        $scope.profile.password = $scope.profile.server.password;
                     dataParser.userProfile = $scope.profile;
+                    resourceService.GetContactVeeryFormat($scope.profile.userName).then(function (response) {
+                        if (response.IsSuccess) {
+                            $rootScope.login = 0;
+                            if ($scope.profile.server.password)
+                                $scope.profile.password = $scope.profile.server.password;
+                            $scope.profile.veeryFormat = response.Result;
+                            dataParser.userProfile = $scope.profile;
+                            $state.go('callControl');
+                        }
+                        else{
+                            Notification.error({message: "Fail to Get Contact Details.", delay: 500, closeOnClick: true});
+                        }
+                    }, function (error) {
+                        Notification.error({message: "Fail to Communicate with servers", delay: 1000, closeOnClick: true});
+                    });
 
-                    $state.go('callControl');
 
                 }
             });
