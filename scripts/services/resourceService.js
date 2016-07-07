@@ -74,7 +74,7 @@ clusterModule.factory("resourceService", function ($http, $log, baseUrl, dataPar
 
         return $http({
             method: 'get',
-            url: userServiceBaseUrl + "User/" + userName + "/profile/veeryformat/veeryaccount",
+            url: userServiceBaseUrl + "Myprofile/veeryformat/veeryaccount",
             headers: {
                 'authorization': "Bearer " + dataParser.userProfile.server.token
             }

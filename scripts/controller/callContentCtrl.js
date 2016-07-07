@@ -470,6 +470,9 @@ routerApp.controller('callContentCtrl', function ($rootScope, $log, $scope, $sta
     })();//end
 
     $scope.eventHandler = {
+        showBreakOption: function () {
+            $scope.showOptions= !$scope.showOptions;
+        },
         keyPadClick: function () {
             UIStateChange.showKeyPad();
         },

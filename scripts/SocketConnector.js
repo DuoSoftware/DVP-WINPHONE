@@ -84,7 +84,7 @@ angular.module('veerySoftPhone')
             socket.on('agent_found', function (data) {
 
                 var values = data.Message.split("|");
-                var displayMsg = "Company : "+data.Company+"<br> Company No : "+values[3]+"<br> Caller : "+values[5]+"<br> Skill : "+values[6];
+                var displayMsg = "Company : "+data.Company+"<br> Company No : "+values[5]+"<br> Caller : "+values[3]+"<br> Skill : "+values[6];
                 //document.getElementById("lblNotification").innerHTML = displayMsg;
                 Notification.success({
                     message: displayMsg,

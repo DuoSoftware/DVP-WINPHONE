@@ -3,29 +3,16 @@
     <!--http://www.alessioatzeni.com/blog/css3-preloader-animation-for-only-user-agent-supports-it/-->
 
 
+
+    <!--<div class="veery-logo101">
+        <img src="assets/images/logo1.png">
+    </div>-->
     <div class="container">
         <div class="col-lg-12">
             <div class="row">
-                <div class="col-lg-7">
-                    <div class="reg-lef-wrap  fadeIn">
-                        <div class="veery-logo101">
-                            <img src="assets/images/logo1.png">
-                        </div>
-                        <h1 class="h1 fnt-color-blue1 font-Dosis  fnt-weight-500">Veery Web Phone</h1>
 
-                        <p class="font-family-Roboto fnt-color-3 fnt-weight-200 ">
-                            Veery is an API driven communication platform for developers.
-                            Developers can add voice, sms, messaging, video communication facility to their application
-                            through Veery.
-                            This is a sample soft phone developed using Veery WEBRTC SDK and NOTIFICATION SDK to
-                            demonstrate how to add voice features to your own website.
-                        </p>
-
-
-
-                    </div>
-
-                    <div class="mode-wrap-video">
+                <div class="col-lg-5">
+                    <div class="mode-wrap-video" ng-hide="true">
                         <div id="divVideo" class='div-video'>
                             <div id="divVideoRemote" class="video-remote">
                                 <video class="video" width="100%" height="100%" id="video_remote"
@@ -72,8 +59,6 @@
                         <audio id="ringbacktone" loop src="sounds/ringbacktone.wav"></audio>
                         <audio id="dtmfTone" src="sounds/dtmf.wav"></audio>
                     </div>
-                </div>
-                <div class="col-lg-5">
                     <div class="call-control-wrap call-wrap p-20  fadeInRight">
                         <form class="form-horizontal">
                             <div class="form-group">
@@ -174,6 +159,49 @@
                                                 <!--<td colspan=3><input type="button" style="width: 100%"-->
                                                 <!--class="btn btn-medium btn-danger" value="close"-->
                                                 <!--ng-click="closeKeyPad()"/></td>-->
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                    <!--#breakOption-->
+                                    <div id='breakOption' class="break-option-wrap"
+                                         ng-show="showOptions">>
+                                        <table style="width: 100%; height: 100%">
+                                            <tr>
+                                                <td><a class="dialpadbtn m-r-35"
+                                                       value="Unregister"
+                                                       ng-click="unregisterWithArds();">Unregister</a>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="2"
+                                                       ng-click="eventHandler.sipSendDTMF('2');">2</a>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="3"
+                                                       ng-click="EndBreakRequest();">Available</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="Official"
+                                                       ng-click="BreakRequest('Official');">Official</a>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="Lunch"
+                                                       ng-click="BreakRequest('Lunch');">Lunch</a>
+                                                    <a class="dialpadbtn m-r-35" value="Tea"
+                                                       ng-click="BreakRequest('Tea');">Tea</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a class="dialpadbtn m-r-35"
+                                                       value="7"
+                                                       ng-click="BreakRequest('Training');">Training</a>
+                                                    <a class="dialpadbtn m-r-35"
+                                                       value="8"
+                                                       ng-click="BreakRequest('Wrap');">Wrap</a>
+                                                    <a class="dialpadbtn m-r-35" href="javascript:void (0);"
+                                                       value="9"
+                                                       ng-click="BreakRequest('Meeting');">Meeting</a>
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -295,6 +323,15 @@
                                             <span class="icon-telephone-keypad-with-ten-keys"></span>
                                             <!--<span class="fa fa-microphone-slash"></span>-->
                                         </li>
+
+                                        <!--1212121-->
+                                        <li class="font-family-Roboto call-btn-rounder"
+                                            ng-class="UIelementOption.showCallHistory? 'keypad-selected':
+                                             'keypad-select'"
+                                            ng-click="eventHandler.showBreakOption()">
+                                            <span class="icon-telephone-keypad-with-ten-keys"></span>
+                                            <!--<span class="fa fa-microphone-slash"></span>-->
+                                        </li>
                                         <!--`-->
                                     </ul>
                                 </div>
@@ -304,51 +341,14 @@
                             <div class="form-group" id="phoneButtons">
                             </div>
                         </form>
+
                     </div>
 
-                    <div class="row">
-                        <!-- Split button -->
-                       <!-- <div class="btn-group">
 
-                            <button ng-show="!registerdWithArds" type="button"
-                                    class="btn btn-default btn-sm btn-warning" ng-click="RegisterWithArds()">
-                                Register
-                            </button>
-                        </div>-->
-                        <div class="btn-group" ng-show="registerdWithArds">
 
-                            <button ng-show="registerdWithArds" type="button"
-                                    class="btn btn-default btn-sm btn-warning" ng-click="unregisterWithArds()">
-                                Unregister
-                            </button>
-
-                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
-                                   ng-click="BreakRequest('Lunch')"
-                                   uib-btn-radio="'Lunch'">
-                                Lunch
-                            </label>
-                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
-                                   ng-click="BreakRequest('Official')"
-                                   uib-btn-radio="'Official '">Official</label>
-                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
-                                   ng-click="BreakRequest('Tea')"
-                                   uib-btn-radio="'MiddleTea'">Tea</label>
-                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
-                                   ng-click="BreakRequest('Training')"
-                                   uib-btn-radio="'Training'">Training</label>
-                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
-                                   ng-click="BreakRequest('Wrap')"
-                                   uib-btn-radio="'Wrap'">Wrap</label>
-                            <label class="btn btn-primary btn-sm" ng-model="radioModel"
-                                   ng-click="BreakRequest('Meeting')"
-                                   uib-btn-radio="'Meeting'">Meeting</label>
-                            <label class="btn btn-success btn-sm" ng-model="radioModel"
-                                   ng-click="EndBreakRequest()"
-                                   uib-btn-radio="'available'">Available</label>
-                        </div>
-                    </div>
 
                 </div>
+
             </div>
         </div>
     </div>

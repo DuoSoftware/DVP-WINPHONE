@@ -3,7 +3,7 @@
  */
 
 'use strict'
-routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $base64, $http, jwtHelper, dataParser,Notification, resourceService) {
+routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $base64, $http, jwtHelper, dataParser,Notification, resourceService,oauthServiceBaseUrl) {
 
 
     $scope.profile = {};
@@ -21,7 +21,7 @@ routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $
     $scope.Register = function () {
 
 
-        var url = "http://localhost:3636/oauth/token";
+
         var encoded = $base64.encode("ae849240-2c6d-11e6-b274-a9eec7dab26b:6145813102144258048");
         var config = {
             headers: {
@@ -33,11 +33,11 @@ routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $
             "grant_type": "password",
             "username": $scope.profile.userName,
             "password": $scope.profile.password,
-            "scope": "write_ardsresource write_notification read_userProfile profile_veeryaccount resourceid"
+            "scope": "write_ardsresource write_notification read_myUserProfile profile_veeryaccount resourceid"
         };
 
 
-        $http.post(url, data, config)
+        $http.post(oauthServiceBaseUrl, data, config)
             .success(function (data, status, headers, config) {
                 $scope.PostDataResponse = data;
                 console.log(data);
@@ -52,7 +52,7 @@ routerApp.controller('registrationCtrl', function ($rootScope, $scope, $state, $
                     $scope.profile.publicIdentity = "sip:" + decodeData.context.veeryaccount.contact;//sip:bob@159.203.160.47
                     $scope.profile.server.token = data.access_token;
                     $scope.profile.server.domain = values[1];
-                    $scope.profile.server.websocketUrl = "wss://" + values[1] + ":7443";//wss://159.203.160.47:7443
+                    $scope.profile.server.websocketUrl = "ws://" + values[1] + ":5066";//wss://159.203.160.47:7443
                     $scope.profile.server.outboundProxy = "";
                     $scope.profile.server.enableRtcwebBreaker = false;
                     dataParser.userProfile = $scope.profile;

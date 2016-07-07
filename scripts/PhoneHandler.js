@@ -172,6 +172,7 @@ function answerCall(){
 }
 // makes a call (SIP INVITE)
 function sipCall(s_type, phoneNumber) {
+    s_type = "call-audio";
     if (oSipStack && !oSipSessionCall) {// && !tsk_string_is_null_or_empty(txtPhoneNumber)) {
         if (s_type == 'call-screenshare') {
             if (!SIPml.isScreenShareSupported()) {
